@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.db
+*.sqlite3
+.env
+.pytest_cache/
+*.egg-info/
+.idea/
+
+.DS_Store
+data/
+
+_to_delete/

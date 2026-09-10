@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Lernsession{% endblock %}
+{% block content %}
+  <p><a href="/decks/{{ deck.id }}">&larr; Zurück zum Deck</a></p>
+  <h1>Lernsession: {{ deck.name }}</h1>
+
+  {% if current %}
+    <p>Noch {{ remaining }} fällige Karte(n).</p>
+    <div class="card study-card">
+      <p><strong>Frage:</strong> {{ current.question }}</p>
+      <details open><summary>Antwort anzeigen</summary><p>{{ current.answer }}</p></details>
+      <form method="post" action="/decks/{{ deck.id }}/study/{{ current.id }}/answer">
+        <p>Wie gut wusstest du die Antwort? (0 = gar nicht, 5 = perfekt)</p>
+        {% for g in range(0, 6) %}
+          <button type="submit" name="grade" value="{{ g }}">{{ g }}</button>
+        {% endfor %}
+      </form>
+    </div>
+  {% else %}
+    <p>Keine fälligen Karten mehr. Gut gemacht!</p>
+  {% endif %}
+{% endblock %}

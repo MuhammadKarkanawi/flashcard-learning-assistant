@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Decks{% endblock %}
+{% block content %}
+  <h1>Meine Decks</h1>
+
+  <form method="post" action="/decks" class="card">
+    <h2>Neues Deck</h2>
+    <label>Name <input type="text" name="name" required></label>
+    <label>Beschreibung <input type="text" name="description"></label>
+    <button type="submit">Anlegen</button>
+  </form>
+
+  <ul class="deck-list">
+    {% for deck in decks %}
+      <li><a href="/decks/{{ deck.id }}">{{ deck.name }}</a> — {{ deck.description }}</li>
+    {% else %}
+      <li>Noch keine Decks. Lege oben dein erstes an.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

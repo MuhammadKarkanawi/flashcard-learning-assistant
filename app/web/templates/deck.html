@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}{{ deck.name }}{% endblock %}
+{% block content %}
+  <p><a href="/">&larr; Alle Decks</a></p>
+  <h1>{{ deck.name }}</h1>
+  <p>{{ deck.description }}</p>
+  <p><a href="/decks/{{ deck.id }}/study" class="button">Lernsession starten ({{ due_count }} fällig)</a></p>
+
+  <section class="card">
+    <h2>Quellmaterial hochladen</h2>
+    <form method="post" action="/decks/{{ deck.id }}/sources/upload" enctype="multipart/form-data">
+      <input type="file" name="file" accept=".pdf,.txt,.md" required>
+      <button type="submit">Hochladen &amp; in Abschnitte teilen</button>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2>Quellen</h2>
+    <ul>
+      {% for s in sources %}
+        <li>
+          {{ s.filename }}
+          <form method="post" action="/decks/{{ deck.id }}/sources/{{ s.id }}/generate" style="display:inline">
+            <button type="submit">Karten generieren (lokales KI-Modell)</button>
+          </form>
+        </li>
+      {% else %}
+        <li>Noch keine Quellen hochgeladen.</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>Zu prüfende KI-Vorschläge ({{ candidates|length }})</h2>
+    {% for c in candidates %}
+      <div class="candidate">
+        <p><strong>F:</strong> {{ c.question }}</p>
+        <p><strong>A:</strong> {{ c.answer }}</p>
+        <details><summary>Quellenausschnitt</summary><p>{{ c.source_excerpt }}</p></details>
+        <form method="post" action="/cards/{{ c.id }}/decision">
+          <input type="hidden" name="deck_id" value="{{ deck.id }}">
+          <input type="hidden" name="action" value="accept">
+          <button type="submit">Annehmen</button>
+        </form>
+        <form method="post" action="/cards/{{ c.id }}/decision">
+          <input type="hidden" name="deck_id" value="{{ deck.id }}">
+          <input type="hidden" name="action" value="reject">
+          <button type="submit">Ablehnen</button>
+        </form>
+        <form method="post" action="/cards/{{ c.id }}/decision">
+          <input type="hidden" name="deck_id" value="{{ deck.id }}">
+          <input type="hidden" name="action" value="edit">
+          <input type="text" name="question" value="{{ c.question }}">
+          <input type="text" name="answer" value="{{ c.answer }}">
+          <button type="submit">Bearbeiten &amp; annehmen</button>
+        </form>
+      </div>
+    {% else %}
+      <p>Keine offenen Vorschläge.</p>
+    {% endfor %}
+  </section>
+
+  <section class="card">
+    <h2>Angenommene Karten ({{ accepted|length }})</h2>
+    <ul>
+      {% for c in accepted %}
+        <li>{{ c.question }} <em>(fällig: {{ c.due_at }})</em></li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endblock %}

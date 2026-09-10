@@ -1,0 +1,26 @@
+services:
+  flashcards:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: sqlite:////app/data/flashcards.db
+      # Points at a local, OpenAI-compatible inference server (e.g. Ollama)
+      # running directly on the host machine, NOT inside this container.
+      MODEL_BASE_URL: ${MODEL_BASE_URL:-http://host.docker.internal:11434/v1}
+      MODEL_NAME: ${MODEL_NAME:-gemma3n:e4b}
+      MODEL_API_KEY: ${MODEL_API_KEY:-not-needed}
+      MODEL_TIMEOUT_SECONDS: ${MODEL_TIMEOUT_SECONDS:-30}
+      MODEL_MAX_RETRIES: ${MODEL_MAX_RETRIES:-1}
+      MAX_CARDS_PER_CHUNK: ${MAX_CARDS_PER_CHUNK:-3}
+      CHUNK_MAX_CHARS: ${CHUNK_MAX_CHARS:-1200}
+      DUPLICATE_SIMILARITY_THRESHOLD: ${DUPLICATE_SIMILARITY_THRESHOLD:-0.85}
+    volumes:
+      - flashcards-data:/app/data
+    extra_hosts:
+      # Needed for host.docker.internal to resolve on Linux hosts; a no-op
+      # on Docker Desktop (macOS/Windows), which already provides it.
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  flashcards-data:
