@@ -181,6 +181,29 @@ refreshed report before submission.
 
 ## 9. Known limitations
 
+### Privacy, security, and misuse
+
+- All uploaded study material and generated flashcards stay in the local
+  SQLite database; the only outbound network call the AI component makes is
+  to the locally configured inference server (no cloud/third-party AI API
+  is used for the assessed functionality).
+- AI-generated candidates are visibly labelled (`origin: ai_generated`) and
+  are never shown to the learner as accepted knowledge before a human
+  explicitly reviews them — this is the main safeguard against the model's
+  lack of real reasoning/accountability being mistaken for verified content.
+- Potential misuse: a user could upload copyrighted material they don't have
+  rights to, or paste adversarial "prompt injection" text as if it were
+  study content (evaluated explicitly in `eval/cases.json`, case
+  `prompt-injection`) to try to manipulate the model's output. The
+  application does not attempt content moderation of uploaded material
+  beyond the structural validation already described; this is documented
+  here rather than silently assumed away.
+- No authentication (per the assignment's scope rule for a single local
+  user) means anyone with network access to the running instance can read
+  or modify all decks/cards; do not expose this service on an untrusted
+  network without adding authentication first.
+
+
 - Docker build/run has not been independently verified (no Docker daemon in
   the authoring sandbox) — verify with `docker compose up --build` yourself.
 - Groundedness is measured with a lexical-overlap heuristic, not a
