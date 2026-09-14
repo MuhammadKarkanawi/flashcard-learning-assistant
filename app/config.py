@@ -18,7 +18,7 @@ class Settings(BaseSettings):
 
     # Local, OpenAI-compatible inference server (e.g. Ollama, llama.cpp server, LM Studio)
     model_base_url: str = "http://host.docker.internal:11434/v1"
-    model_name: str = "gemma3n:e4b"
+    model_name: str = "gemma3:4b"
     model_api_key: str = "not-needed"
     model_timeout_seconds: float = 30.0
     model_max_retries: int = 1

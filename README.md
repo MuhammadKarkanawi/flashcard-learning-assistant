@@ -43,7 +43,7 @@ scenario.
 # macOS: https://ollama.com/download, or:
 brew install ollama
 ollama serve &                 # starts the local server on :11434
-ollama pull gemma3n:e4b         # ~small multimodal model, adjust to your hardware
+ollama pull gemma3:4b         # ~small multimodal model, adjust to your hardware
 ```
 
 Any OpenAI-compatible server works (llama.cpp server, LM Studio, ...) — just
@@ -98,7 +98,7 @@ hard-coded. Key ones:
 |---|---|---|
 | `DATABASE_URL` | SQLite location | `sqlite:///./data/flashcards.db` |
 | `MODEL_BASE_URL` | OpenAI-compatible base URL of your local inference server | `http://host.docker.internal:11434/v1` |
-| `MODEL_NAME` | Model name/tag as known to that server | `gemma3n:e4b` |
+| `MODEL_NAME` | Model name/tag as known to that server | `gemma3:4b` |
 | `MODEL_API_KEY` | Sent as a Bearer token; most local servers ignore it | `not-needed` |
 | `MODEL_TIMEOUT_SECONDS` / `MODEL_MAX_RETRIES` | Inference call resilience | `30` / `1` |
 | `MAX_CARDS_PER_CHUNK` | Cap on generated cards per source chunk | `3` |
