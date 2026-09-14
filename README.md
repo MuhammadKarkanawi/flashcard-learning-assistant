@@ -1,4 +1,4 @@
-# AISE Flashcard Learning Assistant
+# Flashcard Learning Assistant
 
 A spaced-repetition flashcard app that turns your own study material (PDF or
 text) into flashcards using a **locally hosted** LLM, with a mandatory human
